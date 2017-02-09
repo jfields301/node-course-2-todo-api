@@ -31,16 +31,16 @@ app.get('/todos', (req, res) => {
 });
 
 app.get('/todos/:ID', (req, res) => {
-  var id = req.params.id;
-  // if (!ObjectID.isValid(id)) {
-  //   res.status(404).send("Not a valid ID")
-  // }
-  Todo.findById(id).then((todo) => {
-    res.status(200).send(todo);
+  var id = req.params.ID;
+  if (!ObjectID.isValid(id)) {
+    res.status(404).send("Not a valid ID")
   }
-  // , (e) => {
-  //   res.send("No document exits");
-  // }
+  Todo.findById(id).then((todo) => {
+    if (!todo) {
+      res.status(200).send("No document found")
+    }
+      res.status(200).send(todo);
+  }
 );
 });
 
