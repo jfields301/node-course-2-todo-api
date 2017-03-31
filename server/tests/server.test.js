@@ -187,7 +187,7 @@ describe('GET /users/me', () => {
   });
 });
 
-describe('POST /users', (done) => {
+describe('POST /users', () => {
   it('should create a user', (done) => {
     var email = 'example@example.com';
     var password = '123mnb!';
@@ -201,18 +201,17 @@ describe('POST /users', (done) => {
         expect(res.body._id).toExist();
         expect(res.body.email).toBe(email);
       })
-      .end(done);
-      //   (err, res) => {
-      //   if (err) {
-      //     return done(err);
-      //   }
-      //
-      //   User.findOne({email}).then((user) => {
-      //     expect(user).toExist();
-      //     expect(user.password).toNotBe(password);
-      //     done();
-      //   }).catch((e) => done(e));
-      // });
+      .end((err) => {
+        if (err) {
+          return done(err);
+        }
+
+        User.findOne({email}).then((user) => {
+          expect(user).toExist();
+          expect(user.password).toNotBe(password);
+          done();
+        }).catch((e) => done(e));
+      });
   });
   it('should return validation errors if request is invalid', (done) => {
     var email = 'andrew';

@@ -114,7 +114,7 @@ app.post('/users', (req, res) => {
   user.save().then(() => {
     return user.generateAuthToken();
   }).then((token) => {
-
+    res.header('x-auth', token).send(user);
   }).catch((e) => {
     res.status(400).send(e);
   });
@@ -130,13 +130,33 @@ app.post('/users/login', (req,res) => {
   User.findByCredentials(body.email, body.password).then((user) => {
     user.generateAuthToken().then((token) => {
       res.header('x-auth', token).send(user);
-    });
+    })
   }).catch((e) => {
     res.status(400).send();
   });
 
+  // res.header('x-auth', token).send(user);
+
+  // User.findOne({email: body.email}).then((user) => {
+  //   if(!user) {
+  //     return res.status(404).send();
+  //   }
+  //   bcrypt.compare(body.password, user.password, (err, result) => {
+  //     user.generateAuthToken().then((token) => {
+  //     res.header('x-auth', token).send(user);
+  //     })
+  //   })
+  // });
 }, (e) => {
   res.status(400).send(e);
+});
+
+app.delete('/users/me/token', authenticate, (req, res) => {
+  req.user.removeToken(req.token).then(() => {
+    res.status(200).send();
+  }, () => {
+    res.status(400).send();
+  })
 });
 
 app.listen(port, () => {
