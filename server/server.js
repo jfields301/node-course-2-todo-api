@@ -135,18 +135,6 @@ app.post('/users/login', (req,res) => {
     res.status(400).send();
   });
 
-  // res.header('x-auth', token).send(user);
-
-  // User.findOne({email: body.email}).then((user) => {
-  //   if(!user) {
-  //     return res.status(404).send();
-  //   }
-  //   bcrypt.compare(body.password, user.password, (err, result) => {
-  //     user.generateAuthToken().then((token) => {
-  //     res.header('x-auth', token).send(user);
-  //     })
-  //   })
-  // });
 }, (e) => {
   res.status(400).send(e);
 });
